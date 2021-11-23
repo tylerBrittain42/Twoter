@@ -1,6 +1,5 @@
-from enum import unique
+
 from app import db, login
-from app.routes import index
 from datetime import datetime
 from flask_login import UserMixin
 
@@ -12,7 +11,8 @@ class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), index=True, unique=True)
     password = db.Column(db.String(100))
-
+    authenticated = db.Column(db.Boolean, default=False)
+    
     twotes = db.relationship('Twote',backref='user', lazy='dynamic')
 
     # assorted follower stuff

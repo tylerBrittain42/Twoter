@@ -1,22 +1,40 @@
-from app import app
-from flask import render_template, flash, redirect, url_for
+from app import app, db
+from flask import render_template, flash, redirect, url_for, request
+from flask_login.utils import login_required, login_user
+from flask_login import current_user, login_user, logout_user
+from app.models import User
+
 
 # DO THIS LAST
 @app.route('/')
 def index():
-    return "<h1> Index </h1>"
+    if current_user.is_authenticated:
+        return 'yes'
+    return 'no'
 
 @app.route('/login', methods=['GET'])
 def login_get():
-    render_template('login.html')
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    return render_template('login.html')
 
 @app.route('/login', methods=['POST'])
 def login_post():
-    return 'login post recieved'
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    user = User.query.filter_by(username=request.form.get('username')).first()
+    if user is None or not user.check_password(request.form.get('password')):
+        return redirect(url_for('login_get'))
+    login_user(user)
+
+    return redirect(url_for('index'))
+
 
 @app.route('/logout')
+@login_required
 def logout():
-    return 'logout req recieved'
+    logout_user()
+    return redirect(url_for('login_get'))
 
 @app.route('/sign-up', methods=['GET'])
 def signup_get():
