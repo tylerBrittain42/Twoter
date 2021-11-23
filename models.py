@@ -32,30 +32,9 @@ class User(db.Model, UserMixin):
         self.profile_image = profile_image
         self.posts = posts
 
-# def __repr__(self):
-#         return f"User('{self.username}', '{self.email}', '{self.profile_image}')"
+    # def __repr__(self):
+    #         return f"User('{self.username}', '{self.email}', '{self.profile_image}', '{self.posts}')"
 
-    def following(self):
-            return (User
-                    .select()
-                    .join(Relationship, on=Relationship.to_user)
-                    .where(Relationship.from_user == self)
-                    .order_by(User.username))
-
-    def followers(self):
-            return (User
-                    .select()
-                    .join(Relationship, on=Relationship.from_user)
-                    .where(Relationship.to_user == self)
-                    .order_by(User.username))
-
-    def is_following(self, user):
-            return (Relationship
-                    .select()
-                    .where(
-                        (Relationship.from_user == self) &
-                        (Relationship.to_user == user))
-                    .exists())
     
     def getUsers():
         users = User.query.all()
@@ -89,6 +68,29 @@ class User(db.Model, UserMixin):
             print(e)
         return False
 
+    def following(self):
+            return (User
+                    .select()
+                    .join(Relationship, on=Relationship.to_user)
+                    .where(Relationship.from_user == self)
+                    .order_by(User.username))
+
+    def followers(self):
+            return (User
+                    .select()
+                    .join(Relationship, on=Relationship.from_user)
+                    .where(Relationship.to_user == self)
+                    .order_by(User.username))
+
+    def is_following(self, user):
+            return (Relationship
+                    .select()
+                    .where(
+                        (Relationship.from_user == self) &
+                        (Relationship.to_user == user))
+                    .exists())
+
+
 class Relationship(db.Model):
     from_user = db.ForeignKeyField(User, backref='relationships')
     to_user = db.ForeignKeyField(User, backref='related_to')
@@ -96,22 +98,24 @@ class Relationship(db.Model):
     class Meta:
         indexes = ((('from_user', 'to_user'), True),)
 
-class Post(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100), nullable=True)
-    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    content = db.Column(db.String(145), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    user = db.relationship('User', foreing_keys=user_id)
-
     def getPosts():
             posts = Post.query.all()
-            return [{"id": i.id, "title": i.title, "content": i.content, "user": getUser(i.user_id)} for i in posts]
+            return [{"id": i.id, "content": i.content, "user": getUser(i.user_id)} for i in posts]
 
     def getUserPosts(user_id):
         posts = Post.query.all()
-        return [{"id": item.id, "userid": item.uid, "title": item.title, "content": item.content} for item in
+        return [{"id": item.id, "userid": item.uid, "content": item.content} for item in
                 filter(lambda i: i.uid == user_id, posts)]
+
+
+
+class Post(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    content = db.Column(db.String(145), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    like_count = db.Column(db.Integer, nullable=False)
+    user = db.relationship('User', foreing_keys=user_id)
 
     def addPost(title, content, user_id):
         try:
@@ -133,6 +137,7 @@ class Post(db.Model):
         except Exception as e:
             print(e)
             return False
+
 
 
 class Message(db.Model):
