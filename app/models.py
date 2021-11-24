@@ -21,7 +21,7 @@ class User(UserMixin, db.Model):
         primaryjoin=(followers.c.follower_id == id), 
         secondaryjoin=(followers.c.followed_id == id),
         backref = db.backref('followers',lazy='dynamic'), lazy='dynamic')
-    role = db.Column(db.String(100))
+    role = db.Column(db.String(100), default='user')
     authenticated = db.Column(db.Boolean, default=False)
 
     def is_following(self, user):

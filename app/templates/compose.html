@@ -11,7 +11,7 @@
     />
   </head>
   <body>
-    <h1>sign up</h1>
+    <h1>Compose</h1>
     {% with messages = get_flashed_messages() %}
     {% if messages %}
     <ul>
@@ -21,13 +21,10 @@
       {% endif %}
       {% endwith %}
     </ul>
-    <form action="/sign-up" method="post" class="center-form">
-      <label for="username">Username:</label>
-      <input type="text" name="username" id="username" />
-      <br>
-
-      <label for="password">Password:</label>
-      <input type="password" name="password" id="password" />
+    
+    <form action="/twote" method="post" class="center-form">
+      <label for="content">Content:</label>
+      <textarea name="content" id="content" cols="40" rows="5"></textarea>
       <br>
 
       <button type="submit">Submit</button>
