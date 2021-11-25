@@ -39,6 +39,12 @@ class User(UserMixin, db.Model):
     def check_password(self, password):
         return self.password == password
     
+    def followed_ids(self):
+        id_list = [self.id]
+        for user in self.followed.all():
+            id_list.append(user.id)
+        return id_list
+
 
     def __repr__(self):
         return f'{self.name}'
