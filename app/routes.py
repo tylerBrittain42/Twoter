@@ -1,18 +1,20 @@
+from sqlalchemy.engine import url
 from sqlalchemy.orm import session
 from app import app, db
 from flask import render_template, flash, redirect, url_for, request
 from flask_login.utils import login_required, login_user
 from flask_login import current_user, login_user, logout_user
 from app.models import User, Twote
-from sqlalchemy import desc, asc, func
+from sqlalchemy import desc, asc
+from datetime import date, datetime
 
 
 # DO THIS LAST
 @app.route('/')
 def index():
     if current_user.is_authenticated:
-        return 'yes'
-    return 'no'
+        return redirect(url_for('feed'))
+    return redirect(url_for('login_get'))
 
 @app.route('/login', methods=['GET'])
 def login_get():
@@ -135,6 +137,28 @@ def twote_get():
     if not current_user.is_authenticated:
         return redirect(url_for('index'))
     return render_template('compose.html')
+
+@app.route('/twote', methods=['DELETE'])
+def twote_delete():
+    data = request.form
+    cur_twote = Twote.query.filter_by(id=data.get('twote_id')).first()
+    if current_user.id != cur_twote.u_id:
+        return 'error', 500
+    db.session.delete(cur_twote)
+    db.session.commit()
+    return redirect(url_for('feed'))
+    
+@app.route('/twote', methods=['PUT'])
+def twote_put():
+    data = request.form
+    cur_twote = Twote.query.filter_by(id=data.get('twote_id')).first()
+    if current_user.id != cur_twote.u_id:
+        return 'error', 500
+    cur_twote.content = data.get('content')
+    cur_twote.timestamp = datetime.now()
+    db.session.commit()
+    return redirect(url_for('feed'))
+
 
 
 @app.route('/twote', methods=['POST'])
