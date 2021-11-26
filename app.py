@@ -7,14 +7,27 @@ posts = [
     {
         'user': 'ezxjams',
         'content': 'wuss gud',
+        'status': 'followed'
     },
     {
         'user': 'user2',
         'content': 'Happy Thanksgiving!',
+        'status': 'unfollowed'
     },
         {
         'user': 'RLintao',
         'content': 'Hello world!!',
+        'status': 'unfollowed'
+    },
+    {
+        'user': 'Tyler',
+        'content': 'Hows it goin chief',
+        'status': 'unfollowed'
+    },
+    {
+        'user': 'ivanjeser',
+        'content': 'The FitnessGram™ Pacer Test is a multistage aerobic capacity test that progressively gets more difficult as it continues. The 20 meter pacer test',
+        'status': 'unfollowed'
     }
 ]
 

@@ -19,7 +19,11 @@
         <div class="container">
             <div class="row">
                 <!--User info, notifications, etc.-->
-                <div class="col-lg-4">User Column. Will Delete this text later</div>
+                <div class="col-lg-4">User Column. Will Delete this text later
+                    <div class="sidebar">
+                        test
+                    </div>
+                </div>
                 
                 <!--User Timeline Including twot body and timeline-->
                 <div class="col-lg-8">Dashboard. Will Delete this text later
@@ -58,11 +62,33 @@
                             <hr>
                             <div>
                                 <div>
+                                    <!--Like, Retwot and option to delete a post-->
                                     <img class="img-thumbnail rounded-circle" height="50" width="50">
-                                    <p style="display: inline-block; font-family: 'Hevetica Neue', Roboto, 'Segoe UI', Calibri, sans-serif; padding-left: 15px; ">{{post.content}}</p>
-                                    <button type="button" class="btn btn-danger" style="float: right;">Delete</button>
+                                    <p style="display: inline-block; font-family: 'Hevetica Neue', Roboto, 'Segoe UI', Calibri, sans-serif; padding-left: 30px; padding-right: 30px;">{{post.content}}</p>
+                                    <div style="float:right;">
+                                        <form accept-charset="UTF-8" method="DELETE">
+                                            <button type="button" id="deleteBtn" class="btn btn-danger">Delete</button>
+                                        </form>
+                                        <div class="hstack">
+                                            <button type="button" id="likeBtn" class="btn btn-outline-danger">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+                                                    <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+                                                </svg>
+                                            </button>
+                                            <button type="button" id="retwotBtn" class="btn btn-outline-success">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-repeat" viewBox="0 0 16 16">
+                                                    <path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z"/>
+                                                    <path fill-rule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z"/>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
-                                <a href="user">{{post.user}}</a>
+                                <!--Username and option to follow-->
+                                <div class="vstack">
+                                    <a href="user">{{post.user}}</a>
+                                    <a href="follow">Follow</a>
+                                </div>
                             </div>
                             {% endfor %}
                           </div>
