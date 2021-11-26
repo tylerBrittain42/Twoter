@@ -19,16 +19,16 @@
         <div class="container">
             <div class="row">
                 <!--User info, notifications, etc.-->
-                <div class="col-lg-3">User Column. Will Delete this text later</div>
+                <div class="col-lg-4">User Column. Will Delete this text later</div>
                 
                 <!--User Timeline Including twot body and timeline-->
-                <div class="col-lg-9">Dashboard. Will Delete this text later
+                <div class="col-lg-8">Dashboard. Will Delete this text later
                     <form accept-charset="UTF-8" method="POST">
                         <!--User twot body. Includes char count and post button-->
                         <div class="form-group">
                             <textarea class = "form-control" id="twotBody" rows="3" maxlength="145" placeholder="Twot to your flock"></textarea>
                             <button class="postButton" type = "submit">Twot</button>
-                            <p id="result" style="display: inline-block; float:right"></p>
+                            <p id="result" style="display: inline-block; position: right;"></p>
                             <script>
                                 var textCount = document.getElementById("twotBody");
                                 var result = document.getElementById("result");
@@ -41,11 +41,12 @@
                             </script>
                         </div>
                     </form>
+                    
                     <div class="userTwots">
-                        <div class="dropdown">
+                        <div class="dropdown" >
                             <h1 style="display: inline-block;">Timeline</h1>
                             <!--"Sort by button" for query-->
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="float:right">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="float:right;">
                               Sort timeline by
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
@@ -53,6 +54,17 @@
                               <li><a class="dropdown-item" href="followingtwots">Only Following</a></li>
                               <li><a class="dropdown-item" href="mytwots">Only Me</a></li>
                             </ul>
+                            {% for post in posts %}
+                            <hr>
+                            <div>
+                                <div>
+                                    <img class="img-thumbnail rounded-circle" height="50" width="50">
+                                    <p style="display: inline-block; font-family: 'Hevetica Neue', Roboto, 'Segoe UI', Calibri, sans-serif; padding-left: 15px; ">{{post.content}}</p>
+                                    <button type="button" class="btn btn-danger" style="float: right;">Delete</button>
+                                </div>
+                                <a href="user">{{post.user}}</a>
+                            </div>
+                            {% endfor %}
                           </div>
                     </div>
                 </div>
@@ -60,5 +72,8 @@
         </div>
 
     </body>
-       
+    
+        
+
+    
 </html>
