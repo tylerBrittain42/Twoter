@@ -1,1 +1,2 @@
-from app import getApp
+from app import app
+
