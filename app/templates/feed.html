@@ -11,7 +11,9 @@
     />
   </head>
   <body>
+    {% if c_u %}
     <h1>{{ c_u.name }} Feed</h1>
+    {% endif %}
     {% with messages = get_flashed_messages() %}
     {% if messages %}
     <ul>
