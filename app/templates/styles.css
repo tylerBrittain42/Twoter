@@ -1,0 +1,26 @@
+
+.sidenav {
+    height: 100%;
+    width: 160px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    padding-top: 20px;
+  }
+
+.nav:hover{
+    color:royalblue;
+}
+
+.posts{
+    font-size: 20px;
+    display: inline-block; 
+    font-family: 'Hevetica Neue', Roboto, 'Segoe UI', Calibri, sans-serif; 
+    padding-left: 30px;
+    padding-right: 30px;
+    font-size: 25px;
+    resize: both;
+}
