@@ -1,29 +1,23 @@
-from flask import Flask
+
 from app import db, login
 from datetime import datetime
 from flask_login import UserMixin
-from flask_sqlalchemy import SQLAlchemy
-
-
-app = Flask(__name__)
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-# login = LoginManager(app)
-
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 
 followers = db.Table('followers',
     db.Column('follower_id', db.Integer, db.ForeignKey('user.id')),
-    db.Column('followed_id', db.Integer, db.ForeignKey('user.id'))
-    )
+    db.Column('followed_id', db.Integer, db.ForeignKey('user.id')))
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(64), index=True, unique=True)
+    name = db.Column(db.String(100), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
-    password = db.Column(db.String(128))
-    profile_image = db.Column(db.String(20), nullable=False, default='default.jpg')
+    password = db.Column(db.String(100))
+    profile_image = db.Column(db.String(200), nullable=False, default='default.jpg')
     authenticated = db.Column(db.Boolean, default=False)
-    twotes = db.relationship('Twote',backref='user', lazy='dynamic') 
+    
+    twotes = db.relationship('Twote',backref='user', lazy='dynamic')
+
+    # assorted follower stuff
     followed = db.relationship(
         'User', secondary=followers, 
         primaryjoin=(followers.c.follower_id == id), 
@@ -56,6 +50,7 @@ class User(UserMixin, db.Model):
             id_list.append(user.id)
         return id_list
 
+
     def followed_twotes(self):
         followed = Twote.query.join(
             followers, (followers.c.followed_id == Twote.u_id)).filter(
@@ -63,9 +58,6 @@ class User(UserMixin, db.Model):
         own = Twote.query.filter_by(u_id=self.id)
         return followed.union(own).order_by(Twote.timestamp.desc())
 
-@login.user_loader
-def load_user(id):
-    return User.query.get(int(id))
 
 
 class Twote(db.Model):
@@ -83,4 +75,12 @@ class Twote(db.Model):
 #     content = db.TextField()
 #     pub_date = db.DateTimeField()
 
+    u_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
+    def __repr__(self):
+        return f'{self.content}'
+
+
+@login.user_loader
+def load_user(id):
+    return User.query.get(int(id))

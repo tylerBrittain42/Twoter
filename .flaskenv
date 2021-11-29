@@ -1,0 +1,2 @@
+FLASK_APP=twoter.py
+FLASK_ENV=development
