@@ -27,7 +27,7 @@ class User(UserMixin, db.Model):
     authenticated = db.Column(db.Boolean, default=False)
     
     def __repr__(self):
-        return '<User {}>'.format(self.username)
+        return '<User {}>'.format(self.name)
 
     def is_following(self, user):
         return self.followed.filter(
@@ -65,7 +65,7 @@ class Twote(db.Model):
     content = db.Column(db.String(145), index=True, unique=True)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     u_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    like_count = db.Column(db.Integer, nullable=False)
+    like_count = db.Column(db.Integer, nullable=False, default=0)
 
     def __repr__(self):
         return '<Twote {}>'.format(self.content)
