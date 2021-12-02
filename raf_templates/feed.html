@@ -131,7 +131,7 @@
                               <li><a class="dropdown-item" href="alltwots">Everyone</a></li>
                               <li><a class="dropdown-item" href="followingtwots">Only Following</a></li>
                             </ul>
-                            {% for post in posts %}
+                            {% for twote in twotes %}
                             <hr>
                             <div>
                                 <div>
@@ -139,7 +139,7 @@
                                     <!--Username and option to follow-->
                                     <div class="vstack" style="float:left;">
                                         <img class="img-thumbnail rounded-circle" height="50" width="50">
-                                        <a href="user">{{post.user}}</a>
+                                        <a href="user">{{twote.user}}</a>
 
                                         <!--add Jinja2 if statement-->
                                         
@@ -148,9 +148,9 @@
                                     </div>
                                     
                                     <div class="posts" style="box-sizing: content-box;">
-                                        <p class="posts">{{post.content}}</p>
+                                        <p class="posts">{{twote.content}}</p>
                                         <br>
-                                        <p style="font-size: 15px; color: gray">{{post.liked}} likes</p>
+                                        <p style="font-size: 15px; color: gray">{{twote.liked}} likes</p>
                                     </div>
                                     <div style="float:right;">
                                         <div class="hstack">

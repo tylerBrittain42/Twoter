@@ -38,25 +38,24 @@
   <body class="text-center">
     
     <main class="form-signin">
-      <form>
         <img class="mb-4" src="TwoterLogo.png" alt="" width="200" height="200">
         <h1 class="h3 mb-3 fw-normal">Sign Up for Twoter</h1>
         <p>Create your own flock</p>
-
+        <form action="/sign-up" method="post">
         <div class="form-floating">
-          <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-          <label for="floatingInput">Email address</label>
+          <input type="username" class="form-control" id="floatingInput" placeholder="Username">
+          <label for="floatingInput">Username</label>
+        </div>
+        <div class="form-floating">
+          <input type="email" class="form-control" id="floatingInput" placeholder="email">
+          <label for="floatingInput">email</label>
         </div>
         <div class="form-floating">
           <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
           <label for="floatingPassword">Password</label>
         </div>
 
-        <div class="checkbox mb-3">
-          <label>
-            <input type="checkbox" value="remember-me"> Remember me
-          </label>
-        </div>
+
         <div>
           <p>Already have an account? <a href='/login'>login</a></p> 
         </div>
