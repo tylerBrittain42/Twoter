@@ -128,7 +128,7 @@ def feed():
 @app.route('/feed/all')
 def all_feed():
     content = Twote.query.order_by(desc(Twote.timestamp)).all()
-    return render_template('feed.html', twotes=content)
+    return render_template('feed.html', twotes=content, c_u=current_user)
 
 # REMOVE ME
 # soletely used to test twote post route
