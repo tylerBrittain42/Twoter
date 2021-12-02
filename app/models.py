@@ -2,6 +2,8 @@
 from app import db, login
 from datetime import datetime
 from flask_login import UserMixin
+import hashlib
+from werkzeug.security import generate_password_hash,check_password_hash
 
 followers = db.Table('followers',
     db.Column('follower_id', db.Integer, db.ForeignKey('user.id')),
@@ -11,7 +13,7 @@ class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
-    password = db.Column(db.String(100))
+    password_hash = db.Column(db.String(100))
     profile_image = db.Column(db.String(200), nullable=False, default='default.jpg')
     authenticated = db.Column(db.Boolean, default=False)
     
@@ -41,15 +43,17 @@ class User(UserMixin, db.Model):
         if self.is_following(user):
             self.followed.remove(user)
 
+    def set_password(self, password):
+        self.password_hash == generate_password_hash(password)
+        
     def check_password(self, password):
-        return self.password == password
+        return check_password_hash(self.password_hash, password)
     
     def followed_ids(self):
         id_list = [self.id]
         for user in self.followed.all():
             id_list.append(user.id)
         return id_list
-
 
     def followed_twotes(self):
         followed = Twote.query.join(
