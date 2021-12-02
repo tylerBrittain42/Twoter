@@ -68,9 +68,12 @@ def signup_post():
 
 @app.route('/user/<user>')
 def user(user):
-
+    if not current_user.is_authenticated:
+        return redirect(url_for('login_get'))    
+    
     if User.query.filter_by(name=user).first() is None:
-        return 'USER DOES NOT EXIST'
+        flash('USER DOES NOT EXIST')
+        return redirect(url_for('feed'))
 
     content = Twote.query.filter(Twote.user.has(name=user)).order_by(desc(Twote.timestamp)).all()
 
@@ -116,6 +119,9 @@ def unfollow(user):
 @app.route('/feed')
 def feed():
 
+    if not current_user.is_authenticated:
+        return redirect(url_for('login_get')) 
+
     content = []
     
     followed_users = current_user.followed.all()
@@ -127,6 +133,10 @@ def feed():
 
 @app.route('/feed/all')
 def all_feed():
+
+    if not current_user.is_authenticated:
+        return redirect(url_for('login_get')) 
+
     content = Twote.query.order_by(desc(Twote.timestamp)).all()
     return render_template('feed.html', twotes=content)
 
@@ -140,6 +150,8 @@ def twote_get():
 
 @app.route('/twote', methods=['DELETE'])
 def twote_delete():
+    if not current_user.is_authenticated:
+        return redirect(url_for('login_get')) 
     data = request.form
     cur_twote = Twote.query.filter_by(id=data.get('twote_id')).first()
     if current_user.id != cur_twote.u_id:
@@ -150,6 +162,8 @@ def twote_delete():
     
 @app.route('/twote', methods=['PUT'])
 def twote_put():
+    if not current_user.is_authenticated:
+        return redirect(url_for('login_get')) 
     data = request.form
     cur_twote = Twote.query.filter_by(id=data.get('twote_id')).first()
     if current_user.id != cur_twote.u_id:
@@ -164,7 +178,7 @@ def twote_put():
 @app.route('/twote', methods=['POST'])
 def twote_post():
     if not current_user.is_authenticated:
-        return redirect(url_for('index'))
+        return redirect(url_for('login_get'))
 
     content = request.form.get('content')
     
