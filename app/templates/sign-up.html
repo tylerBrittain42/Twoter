@@ -38,42 +38,34 @@
   </head>
 
   
-  <body class="text-center">
+  <body class="text-center form-signin">
+      <img class="mb-4" src="TwoterLogo.png" alt="" width="200" height="200">
+      <h1 class="h3 mb-3 fw-normal">Sign Up for Twoter</h1>
+      <p>Create your own flock</p>
 
-    <main class="form-signin">
-        <img class="mb-4" src="TwoterLogo.png" alt="" width="200" height="200">
-        <h1 class="h3 mb-3 fw-normal">Sign Up for Twoter</h1>
-        <p>Create your own flock</p>
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-        <form action="/sign-up" method="post">
-          {% for message in messages %}
-          <li>{{ message }}</li>
-          {% endfor %}
-          {% endif %}
-          {% endwith %}
-        <form action="/sign-up" method="post" class="center-form">
-          <!--Username sign-up-->
-          <input type="text" class="form-control" id="username" placeholder="Username">
-          <label for="username"></label>
+      {% with messages = get_flashed_messages() %}
+      {% if messages %}
+      {% for message in messages %}
+      <li>{{ message }}</li>
+      {% endfor %}
+      {% endif %}
+      {% endwith %}
+      <form action="/sign-up" method="post" class="center-form">
+        <!--Username sign-up-->
+        <label for="username"></label>
+        <input type="text" class="form-control" name="username" id="username" placeholder="Username">
 
-          <!--email sig-up-->
-          <input type="email" class="form-control" id="email" placeholder="email">
-          <label for="email"></label>
+        <!--Password sign-up-->
+        <label for="password"></label>
+        <input type="password" class="form-control" name="password" id="password" placeholder="Password">
+        
+        <button class="w-100 btn btn-lg btn-primary" type="submit">Find Your Flock</button>
+      </form>  
 
-          <!--Password sign-up-->
-          <input type="password" class="form-control" id="password" placeholder="Password">
-          <label for="password"></label>
-          
-          <button class="w-100 btn btn-lg btn-primary" type="submit">Find Your Flock</button>
-        </form>  
-
-        <div>
-          <p>Already have an account? <a href='/login'>login</a></p> 
-        </div>
-        <p class="mt-5 mb-3 text-muted">&copy; 2021</p>
-      </form>
-    </main>
+      <div>
+        <p>Already have an account? <a href='/login'>login</a></p> 
+      </div>
+      <p class="mt-5 mb-3 text-muted">&copy; 2021</p>
     
   </body>
 </html>
