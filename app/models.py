@@ -2,7 +2,6 @@
 from app import db, login
 from datetime import datetime
 from flask_login import UserMixin
-import hashlib
 from werkzeug.security import generate_password_hash,check_password_hash
 
 followers = db.Table('followers',
@@ -11,9 +10,9 @@ followers = db.Table('followers',
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), index=True, unique=True)
-    email = db.Column(db.String(120), index=True, unique=True)
-    password_hash = db.Column(db.String(100))
+    name = db.Column(db.String(100), index=True, unique=True, nullable=False)
+    email = db.Column(db.String(120), index=True, unique=True, nullable=False)
+    password_hash = db.Column(db.String(100), nullable=False)
     profile_image = db.Column(db.String(200), nullable=False, default='default.jpg')
     authenticated = db.Column(db.Boolean, default=False)
     
