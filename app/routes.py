@@ -7,11 +7,17 @@ from flask_login import current_user, login_user, logout_user
 from app.models import User, Twote
 from sqlalchemy import desc, asc
 from datetime import date, datetime
+from flask_admin import Admin, BaseView, expose
+from flask_admin.base import AdminIndexView
+from flask_admin.contrib.sqla import ModelView
+
 
 
 # DO THIS LAST
 @app.route('/')
 def index():
+    if current_user.is_authenticated and current_user.role == 'admin':
+        return redirect('/admin')
     if current_user.is_authenticated:
         return redirect(url_for('feed'))
     return redirect(url_for('login_get'))
@@ -193,3 +199,24 @@ def twote_post():
 
     return 'TWOTE POST recieved'
 
+
+class HomeView(AdminIndexView):
+    @expose('/')
+    def index(self):
+        # return self.render('admin_index.html')
+        if current_user.is_authenticated and current_user.role == 'admin':
+            return self.render('admin_index.html')
+        else:
+            return redirect(url_for('login_get'))
+
+admin = Admin(app, name='asdasdsad', template_mode='bootstrap3', index_view=HomeView())
+
+class SecureModelView(ModelView):
+    def is_accessible(self):
+        return current_user.is_authenticated
+
+admin.add_view(SecureModelView(User, db.session))
+admin.add_view(SecureModelView(Twote, db.session))
+# admin.add_view(SecureModelView(Teacher, db.session))
+# admin.add_view(SecureModelView(User, db.session))
+# admin.add_view(SecureModelView(Enrollment,db.session))
