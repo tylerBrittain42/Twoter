@@ -74,6 +74,7 @@ def user(user):
 
     content = Twote.query.filter(Twote.user.has(name=user)).order_by(desc(Twote.timestamp)).all()
 
+    
     return render_template('profile.html',twotes=content, c_u=current_user)
 
 @app.route('/follow/<user>', methods=['POST'])
@@ -128,7 +129,7 @@ def feed():
 @app.route('/feed/all')
 def all_feed():
     content = Twote.query.order_by(desc(Twote.timestamp)).all()
-    return render_template('feed.html', twotes=content, c_u=current_user)
+    return render_template('feed.html', twotes=content, c_u=current_user,)
 
 # REMOVE ME
 # soletely used to test twote post route
@@ -146,7 +147,7 @@ def twote_delete():
         return 'error', 500
     db.session.delete(cur_twote)
     db.session.commit()
-    return redirect(url_for('feed'))
+    return redirect(url_for('all_feed'))
     
 @app.route('/twote', methods=['PUT'])
 def twote_put():
@@ -171,11 +172,11 @@ def twote_post():
     # check if empty
     if content == '' or str.isspace(content):
         flash('Error empty tweet')
-        return redirect(url_for('twote_get'))
+        return redirect(url_for('feed'))
 
     new_twote = Twote(content=content,u_id=current_user.id)
     db.session.add(new_twote)
     db.session.commit()
 
-    return 'TWOTE POST recieved'
+    return redirect(url_for('feed'))
 
