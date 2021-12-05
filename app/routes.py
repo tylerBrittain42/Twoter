@@ -59,8 +59,9 @@ def signup_post():
         return redirect(url_for('signup_get'))
 
     # create new user
-    new_user = User(name=data.get('username'), email=data.get('email'))
-    new_user.set_password(data.get('password'))
+    # new_user = User(name=data.get('username'), email=data.get('email'))
+    new_user = User(name=data.get('username'), password_hash=data.get('password'))
+    # new_user.set_password(data.get('password'))
     db.session.add(new_user)
     db.session.commit()
 
