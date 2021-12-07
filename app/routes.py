@@ -50,7 +50,7 @@ def new_admin():
         db.session.add(new_twote)
         db.session.commit()
 
-    return 'admin created'
+    return 'dummy data created'
 
 
 
