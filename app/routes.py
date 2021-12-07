@@ -11,7 +11,7 @@ from flask_admin import Admin, BaseView, expose
 from flask_admin.base import AdminIndexView
 from flask_admin.contrib.sqla import ModelView
 
-# DELETE ME
+# Reset route to create admin as well as dummy users and data
 @app.route('/c')
 def new_admin():
 
@@ -41,11 +41,8 @@ def new_admin():
         db.session.commit()
 
     bar = 0
-    for i in range(0,10):    
-        if bar > 3:
-            bar = 1
-        else:
-            bar += 1
+    for i in range(0,20):    
+        bar = i%len(user_list) + 2
         new_twote = Twote(content=f'This is a test twote #{i}',u_id=bar)
         db.session.add(new_twote)
         db.session.commit()
@@ -54,7 +51,7 @@ def new_admin():
 
 
 
-
+# used to test liked table functionality
 @app.route('/test')
 def testing():
 
@@ -69,7 +66,6 @@ def testing():
     return '200'
 
 
-# DO THIS LAST
 @app.route('/')
 def index():
     if current_user.is_authenticated and current_user.role == 'admin':
