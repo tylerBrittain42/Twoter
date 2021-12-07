@@ -57,8 +57,13 @@ def new_admin():
 
 @app.route('/test')
 def testing():
-    foo = Twote.query.filter_by(1==1).first()
-    print(foo)
+
+    bar = User.query.filter_by(id=3).first()
+    foo = Twote.query.first()
+    # foo.like(current_user)
+    db.session.commit()
+    print(foo.is_liked(bar))
+    print(foo.liked_by.first())
     return '200'
 
 

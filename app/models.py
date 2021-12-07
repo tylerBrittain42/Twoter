@@ -9,9 +9,9 @@ followers = db.Table('followers',
     db.Column('follower_id', db.Integer, db.ForeignKey('user.id')),
     db.Column('followed_id', db.Integer, db.ForeignKey('user.id')))
 
-# liked = db.Table('liked',
-#     db.Column('twotes_id', db.Integer, db.ForeignKey('twote.id')),
-#     db.Column('user_id', db.Integer, db.ForeignKey('user.id')))
+liked = db.Table('liked',
+    db.Column('twotes_id', db.Integer, db.ForeignKey('twote.id')),
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id')))
 
 # retwote = db.Table('retwote',
 #     db.Column('twotes_id', db.Integer, db.ForeignKey('twote.id')),
@@ -35,6 +35,10 @@ class User(UserMixin, db.Model):
         backref = db.backref('followers',lazy='dynamic'), lazy='dynamic')
     role = db.Column(db.String(100), default='user')
     authenticated = db.Column(db.Boolean, default=False)
+
+    # student = relationship("Student",backref=db.backref('class',lazy=True),single_parent=True)
+
+    liked_twotes = relationship('Twote', secondary=liked, backref=db.backref('liked_by', lazy='dynamic'))
     
     def __repr__(self):
         return '<User {}>'.format(self.name)
@@ -76,6 +80,23 @@ class Twote(db.Model):
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     u_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     like_count = db.Column(db.Integer, nullable=False, default=0)
+
+
+    def is_liked(self, user):
+        return self.liked_by.filter(
+            (liked.c.user_id == user.id)).count() > 0
+        
+
+    def like(self,user):
+        if not self.is_liked(user):
+            self.liked_by.append(user)
+
+    def unlike(self,user):
+        if self.is_liked(user):
+            self.liked_by.remove(user)
+
+
+    # liked_twotes = relationship('User', secondary=liked, backref=db.backref('user'))
 
     # likes = db.relationship(
     #     'User', secondary=liked,
