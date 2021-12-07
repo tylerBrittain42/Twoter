@@ -11,6 +11,55 @@ from flask_admin import Admin, BaseView, expose
 from flask_admin.base import AdminIndexView
 from flask_admin.contrib.sqla import ModelView
 
+# DELETE ME
+@app.route('/c')
+def new_admin():
+
+
+    db.session.query(User).delete()
+    db.session.query(Twote).delete()
+    db.session.commit()
+    
+    new_user = User(name='admin', password='pw', role='admin')
+    new_user.set_password('pw')
+    db.session.add(new_user)
+    db.session.commit()
+
+
+    user_list = [
+        ['user1','pw'],
+        ['user2','pw'],
+        ['user3','pw'],
+        ['user4','pw'],
+        ['user5','pw'],
+    ]
+    
+    for cur_u in user_list:
+        new_user = User(name=cur_u[0], password=cur_u[1])
+        new_user.set_password(cur_u[1])
+        db.session.add(new_user)
+        db.session.commit()
+
+    bar = 0
+    for i in range(0,10):    
+        if bar > 3:
+            bar = 1
+        else:
+            bar += 1
+        new_twote = Twote(content=f'This is a test twote #{i}',u_id=bar)
+        db.session.add(new_twote)
+        db.session.commit()
+
+    return 'admin created'
+
+
+
+
+@app.route('/test')
+def testing():
+    foo = Twote.query.filter_by(1==1).first()
+    print(foo)
+    return '200'
 
 
 # DO THIS LAST
