@@ -11,9 +11,61 @@ from flask_admin import Admin, BaseView, expose
 from flask_admin.base import AdminIndexView
 from flask_admin.contrib.sqla import ModelView
 
+# Reset route to create admin as well as dummy users and data
+@app.route('/c')
+def new_admin():
 
 
-# DO THIS LAST
+    db.session.query(User).delete()
+    db.session.query(Twote).delete()
+    db.session.commit()
+    
+    new_user = User(name='admin', password='pw', role='admin')
+    new_user.set_password('pw')
+    db.session.add(new_user)
+    db.session.commit()
+
+
+    user_list = [
+        ['user1','pw'],
+        ['user2','pw'],
+        ['user3','pw'],
+        ['user4','pw'],
+        ['user5','pw'],
+    ]
+    
+    for cur_u in user_list:
+        new_user = User(name=cur_u[0], password=cur_u[1])
+        new_user.set_password(cur_u[1])
+        db.session.add(new_user)
+        db.session.commit()
+
+    bar = 0
+    for i in range(0,20):    
+        bar = i%len(user_list) + 2
+        new_twote = Twote(content=f'This is a test twote #{i}',u_id=bar)
+        db.session.add(new_twote)
+        db.session.commit()
+
+    return 'dummy data created'
+
+
+
+# used to test liked table functionality
+@app.route('/test')
+def testing():
+
+    foo = Twote.query.first()
+    foo.like(current_user)
+    db.session.commit()
+    print(foo.is_liked(current_user))
+    print(foo.liked_by.first())
+    foo.unlike(current_user)
+    print(foo.is_liked(current_user))
+    db.session.commit()
+    return '200'
+
+
 @app.route('/')
 def index():
     if current_user.is_authenticated and current_user.role == 'admin':
