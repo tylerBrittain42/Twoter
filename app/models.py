@@ -90,10 +90,12 @@ class Twote(db.Model):
     def like(self,user):
         if not self.is_liked(user):
             self.liked_by.append(user)
+            self.like_count += 1
 
     def unlike(self,user):
         if self.is_liked(user):
             self.liked_by.remove(user)
+            self.like_count -= 1
 
 
     # liked_twotes = relationship('User', secondary=liked, backref=db.backref('user'))
