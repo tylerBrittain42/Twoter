@@ -9,13 +9,13 @@ followers = db.Table('followers',
     db.Column('follower_id', db.Integer, db.ForeignKey('user.id')),
     db.Column('followed_id', db.Integer, db.ForeignKey('user.id')))
 
-# liked = db.Table('liked',
-#     db.Column('twotes_id', db.Integer, db.ForeignKey('twote.id')),
-#     db.Column('user_id', db.Integer, db.ForeignKey('user.id')))
+liked = db.Table('liked',
+    db.Column('twotes_id', db.Integer, db.ForeignKey('twote.id')),
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id')))
 
-# retwote = db.Table('retwote',
-#     db.Column('twotes_id', db.Integer, db.ForeignKey('twote.id')),
-#     db.Column('user_id', db.Integer, db.ForeignKey('user.id')))
+retwot = db.Table('retwote',
+    db.Column('twotes_id', db.Integer, db.ForeignKey('twote.id')),
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id')))
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -35,6 +35,9 @@ class User(UserMixin, db.Model):
         backref = db.backref('followers',lazy='dynamic'), lazy='dynamic')
     role = db.Column(db.String(100), default='user')
     authenticated = db.Column(db.Boolean, default=False)
+
+    liked_twotes = relationship('Twote', secondary=liked, backref=db.backref('liked_by', lazy='dynamic'))
+    retwotes = relationship('Twote', secondary=retwot, backref=db.backref('retwote_by', lazy='dynamic'))
     
     def __repr__(self):
         return '<User {}>'.format(self.name)
@@ -72,10 +75,41 @@ class User(UserMixin, db.Model):
 
 class Twote(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    content = db.Column(db.String(145), index=True, unique=True)
+    content = db.Column(db.String(145), index=True)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     u_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     like_count = db.Column(db.Integer, nullable=False, default=0)
+    retwote_count = db.Column(db.Integer, nullable=False, default=0)
+
+
+    def is_liked(self, user):
+        return self.liked_by.filter(
+            (liked.c.user_id == user.id)).count() > 0
+        
+
+    def like(self,user):
+        if not self.is_liked(user):
+            self.liked_by.append(user)
+            self.like_count += 1
+
+    def unlike(self,user):
+        if self.is_liked(user):
+            self.liked_by.remove(user)
+            self.like_count -= 1
+
+    def is_retwote(self, user):
+        return self.retwote_by.filter(
+            (retwot.c.user_id == user.id)).count() > 0
+
+    def retwote(self, user):
+        if not self.is_retwote(user):
+            self.retwote_by.append(user)
+            self.retwote_count += 1
+
+    def undo_retwote(self, user):
+        if self.is_liked(user):
+            self.retwote_by.remove(user)
+            self.retwote_count -= 1
 
     # likes = db.relationship(
     #     'User', secondary=liked,

@@ -201,6 +201,12 @@ def twote_post():
 
     return 'TWOTE POST recieved'
 
+# @app.route('/retwote/<twotes_id>',methods=['GET','POST'])
+# @login_required
+# def retwote(twotes_id):
+#         retwotes = retwote(twotes_id=twote.id,id=self.id,timestamp=currentTime,content=new_twote.twote.data)
+#         db.session.add(retweet)
+#         db.session.commit()
 
 class HomeView(AdminIndexView):
     @expose('/')
