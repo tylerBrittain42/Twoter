@@ -47,7 +47,14 @@
                 height: 30px;
                 cursor: hand;		    
             }
-
+            .form-popup {
+              display: none;
+              position: fixed;
+              bottom: 0;
+              right: 15px;
+              border: 3px solid #f1f1f1;
+              z-index: 9;
+            }
         </style>
         
     </head>
@@ -130,7 +137,7 @@
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                               <li><a class="dropdown-item" href="/feed/all">Everyone</a></li>
-                              <li><a class="dropdown-item" href="followingtwots">Only Following</a></li>
+                              <li><a class="dropdown-item twitter-follow-button" href="https://twitter.com/TwitterDev" href="followingtwots">Only Following</a></li>
                             </ul>
                             {% for twote in twotes %}
                             <hr>
@@ -157,7 +164,7 @@
                                         <div class="hstack">
                                             <!--Deleting a post-->
                                             <form accept-charset="UTF-8" method="DELETE">
-                                                <button type="button" id="deleteBtn" onclick="deleteTwote(this)" id="{{twote_id}}" class="btn btn-outline-warning">
+                                                <button type="button" onclick="deleteTwote(this)" id="{{ twote.id }}" class="btn btn-outline-warning">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                                                         <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
                                                         <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
@@ -168,7 +175,7 @@
                                                         console.log('delete clicked')
                                                         const ele={name:document.getElementById('twotecontent').id}
                                                         twote_id=this_ele.id
-                                                        fetch('http://127.0.0.1:5000/twote?twote_id=${twotte_id}',
+                                                        fetch(`http://127.0.0.1:5000/twote?twote_id=${twote_id}`,
                                                         {
                                                             method:'DELETE',
                                                             headers:{'Content-Type':'application/json'},
@@ -182,13 +189,37 @@
                                                 </script>
                                             </form>
                                             <!--Editing a post-->
-                                            <form accept-charset="UTF-8" method="PUT">
-                                                <button type="button" id="editBtn" class="btn btn-outline-info">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
-                                                        <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
-                                                    </svg>
-                                                </button>
-                                            </form>
+                                            <button type="button" id="editBtn" class="btn btn-outline-info" onclick="openForm()">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                                                    <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                                                </svg>
+                                            </button>
+                                            <div class="form-popup" id="myForm">
+                                              <form action="/action_page.php" class="form-container" accept-charset="UTF-8" method="PUT">
+                                                <p>Edit your twote</p>
+                                            
+                                                <textarea class = "form-control" name = "editcontent" id="editcontent" rows="3" maxlength="145" placeholder="Edit your towte"></textarea>
+                                                <p id="editresult" style="display: inline-block; position: right;"></p>
+                                                <button type="submit" class="btn">Submit</button>
+                                                <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+                                              </form>
+                                              <script>
+                                                var textCount = document.getElementById("editcontent");
+                                                var result = document.getElementById("editresult");
+                                                var limit = 145;
+                                                result.textContent = 0 + "/" + limit;
+                                                function openForm() {
+                                                  document.getElementById("myForm").style.display = "block";
+                                                }
+                                                function closeForm() {
+                                                  document.getElementById("myForm").style.display = "none";
+                                                }
+                                                textCount.addEventListener("input", function(){
+                                                    var length=textCount.value.length;
+                                                    result.textContent = length + "/" + limit;
+                                                });
+                                              </script>
+                                            </div>
                                         </div>
                                         <div class="hstack">
                                             <!--add form with put requests-->

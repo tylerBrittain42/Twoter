@@ -129,7 +129,7 @@ def feed():
 @app.route('/feed/all')
 def all_feed():
     content = Twote.query.order_by(desc(Twote.timestamp)).all()
-    return render_template('feed.html', twotes=content, c_u=current_user,)
+    return render_template('feed.html', twotes=content, c_u=current_user)
 
 # REMOVE ME
 # soletely used to test twote post route
@@ -141,8 +141,10 @@ def twote_get():
 
 @app.route('/twote', methods=['DELETE'])
 def twote_delete():
+    foo = request.args.get('twote_id')
     data = request.form
-    cur_twote = Twote.query.filter_by(id=data.get('twote_id')).first()
+    print(f'this is foo:{foo}:')
+    cur_twote = Twote.query.filter_by(id=foo).first()
     if current_user.id != cur_twote.u_id:
         return 'error', 500
     db.session.delete(cur_twote)
