@@ -253,6 +253,32 @@ def twote_post():
 
     return 'TWOTE POST recieved'
 
+@app.route('/like/<twote_id>',methods=['POST'])
+def like_twote(twote_id):
+    if not current_user.is_authenticated:
+        return redirect(url_for('login_get'))
+    cur_twote = Twote.query.filter_by(id=twote_id).first()
+    print(cur_twote)
+    if not cur_twote.is_liked(current_user):
+        cur_twote.like(current_user)
+        db.session.commit()
+        return 'tweet liked'
+    else:
+        return 'already liked'    
+
+@app.route('/unlike/<twote_id>',methods=['POST'])
+def unlike_twote(twote_id):
+    if not current_user.is_authenticated:
+        return redirect(url_for('login_get'))
+    cur_twote = Twote.query.filter_by(id=twote_id).first()
+    print(cur_twote)
+    if cur_twote.is_liked(current_user):
+        cur_twote.unlike(current_user)
+        db.session.commit()
+        return 'tweet unliked'
+    else:
+        return 'tweet already not liked'   
+
 
 class HomeView(AdminIndexView):
     @expose('/')
