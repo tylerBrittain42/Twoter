@@ -51,9 +51,11 @@
               display: none;
               position: fixed;
               bottom: 0;
-              right: 15px;
+              right: 50%;
               border: 3px solid #f1f1f1;
-              z-index: 9;
+              z-index: 15;
+              background-color: white;
+              align-items: center;
             }
         </style>
         
@@ -184,7 +186,6 @@
                                                         .then(response => response.json())
                                                         .then(data =>console.log(data))
                                                         .then(() => location.reload())
-
                                                     }
                                                 </script>
                                             </form>
@@ -195,29 +196,26 @@
                                                 </svg>
                                             </button>
                                             <div class="form-popup" id="myForm">
-                                              <form action="/action_page.php" class="form-container" accept-charset="UTF-8" method="PUT">
+                                              <form accept-charset="UTF-8" action="/twote" method="POST" class="form-container">
                                                 <p>Edit your twote</p>
-                                            
-                                                <textarea class = "form-control" name = "editcontent" id="editcontent" rows="3" maxlength="145" placeholder="Edit your towte"></textarea>
-                                                <p id="editresult" style="display: inline-block; position: right;"></p>
-                                                <button type="submit" class="btn">Submit</button>
+                                                <textarea class = "form-control" name = "content" id="content" rows="3" maxlength="145" placeholder="Edit twot"></textarea>
+                                                <p name="editResult" style="display: inline-block; position: right;"></p>
+                                                <button type="submit" class="btn" >Submit</button>
                                                 <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
                                               </form>
+
                                               <script>
-                                                var textCount = document.getElementById("editcontent");
-                                                var result = document.getElementById("editresult");
-                                                var limit = 145;
-                                                result.textContent = 0 + "/" + limit;
+                                                //Opens window when 'edit' button is pressed
                                                 function openForm() {
                                                   document.getElementById("myForm").style.display = "block";
                                                 }
+                                                //Closes window
                                                 function closeForm() {
                                                   document.getElementById("myForm").style.display = "none";
                                                 }
-                                                textCount.addEventListener("input", function(){
-                                                    var length=textCount.value.length;
-                                                    result.textContent = length + "/" + limit;
-                                                });
+                                                //word count
+
+                                                
                                               </script>
                                             </div>
                                         </div>

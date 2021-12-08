@@ -157,7 +157,7 @@ def twote_put():
     cur_twote = Twote.query.filter_by(id=data.get('twote_id')).first()
     if current_user.id != cur_twote.u_id:
         return 'error', 500
-    cur_twote.content = data.get('content')
+    cur_twote.content = data.get('editcontent')
     cur_twote.timestamp = datetime.now()
     db.session.commit()
     return redirect(url_for('feed'))
