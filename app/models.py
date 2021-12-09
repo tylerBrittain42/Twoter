@@ -36,8 +36,10 @@ class User(UserMixin, db.Model):
     role = db.Column(db.String(100), default='user')
     authenticated = db.Column(db.Boolean, default=False)
 
+
     liked_twotes = relationship('Twote', secondary=liked, backref=db.backref('liked_by', lazy='dynamic'))
     retwotes = relationship('Twote', secondary=retwot, backref=db.backref('retwote_by', lazy='dynamic'))
+
     
     def __repr__(self):
         return '<User {}>'.format(self.name)
@@ -109,7 +111,10 @@ class Twote(db.Model):
     def undo_retwote(self, user):
         if self.is_liked(user):
             self.retwote_by.remove(user)
-            self.retwote_count -= 1
+            self.retwote_count -= 1        
+
+
+    # liked_twotes = relationship('User', secondary=liked, backref=db.backref('user'))
 
     # likes = db.relationship(
     #     'User', secondary=liked,
