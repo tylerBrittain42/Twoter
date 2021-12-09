@@ -137,7 +137,8 @@ def user(user):
 
     content = Twote.query.filter(Twote.user.has(name=user)).order_by(desc(Twote.timestamp)).all()
 
-    return render_template('profile.html',twotes=content)
+    
+    return render_template('profile.html',twotes=content, c_u=current_user)
 
 @app.route('/follow/<user>', methods=['POST'])
 def follow(user):
@@ -210,15 +211,17 @@ def twote_get():
 
 @app.route('/twote', methods=['DELETE'])
 def twote_delete():
+    foo = request.args.get('twote_id')
     if not current_user.is_authenticated:
         return redirect(url_for('login_get')) 
     data = request.form
-    cur_twote = Twote.query.filter_by(id=data.get('twote_id')).first()
+    print(f'this is foo:{foo}:')
+    cur_twote = Twote.query.filter_by(id=foo).first()
     if current_user.id != cur_twote.u_id:
         return 'error', 500
     db.session.delete(cur_twote)
     db.session.commit()
-    return redirect(url_for('feed'))
+    return redirect(url_for('all_feed'))
     
 @app.route('/twote', methods=['PUT'])
 def twote_put():
@@ -228,7 +231,7 @@ def twote_put():
     cur_twote = Twote.query.filter_by(id=data.get('twote_id')).first()
     if current_user.id != cur_twote.u_id:
         return 'error', 500
-    cur_twote.content = data.get('content')
+    cur_twote.content = data.get('editcontent')
     cur_twote.timestamp = datetime.now()
     db.session.commit()
     return redirect(url_for('feed'))
@@ -245,13 +248,13 @@ def twote_post():
     # check if empty
     if content == '' or str.isspace(content):
         flash('Error empty tweet')
-        return redirect(url_for('twote_get'))
+        return redirect(url_for('feed'))
 
     new_twote = Twote(content=content,u_id=current_user.id)
     db.session.add(new_twote)
     db.session.commit()
 
-    return 'TWOTE POST recieved'
+    return redirect(url_for('feed'))
 
 
 # @app.route('/retwote/<twotes_id>',methods=['GET','POST'])
