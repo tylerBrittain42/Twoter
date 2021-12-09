@@ -66,16 +66,17 @@ def testing():
     
     print('TESTING RETWOTES')
     print(foo.is_retwote(current_user))
-    foo.retwote(current_user)
+    if not foo.is_retwote(current_user):
+        foo.retwote(current_user)
     print(foo.is_retwote(current_user))
     db.session.commit()
     print(foo.retwote_by.first())
-    foo.undo_retwote(current_user)
+    # foo.undo_retwote(current_user)
     print(foo.is_retwote(current_user))
 
     # foo.unlike(current_user)
     # print(foo.is_liked(current_user))
-    db.session.commit()
+    # db.session.commit()
     return '200'
 
 
@@ -148,8 +149,8 @@ def user(user):
         flash('USER DOES NOT EXIST')
         return redirect(url_for('feed'))
 
-    content = Twote.query.filter(Twote.user.has(name=user)).order_by(desc(Twote.timestamp)).all()
-
+    # content = Twote.query.filter(Twote.user.has(name=user)).order_by(desc(Twote.timestamp)).all()
+    content = current_user.retwoted()
     
     return render_template('profile.html',twotes=content, c_u=current_user)
 
