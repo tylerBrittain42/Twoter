@@ -75,6 +75,18 @@ class User(UserMixin, db.Model):
         own = Twote.query.filter_by(u_id=self.id)
         return followed.union(own).order_by(Twote.timestamp.desc())
 
+    def retwoted(self):
+        retwoted = Twote.query.join(
+            retwot, (retwot.c.twotes_id== Twote.id)
+        )
+        own = Twote.query.filter_by(u_id=self.id)
+        return retwoted.union(own).order_by(Twote.timestamp.desc()).all()
+
+
+
+
+        return twotes
+
 class Twote(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.String(145), index=True)
@@ -111,7 +123,8 @@ class Twote(db.Model):
     def undo_retwote(self, user):
         if self.is_liked(user):
             self.retwote_by.remove(user)
-            self.retwote_count -= 1        
+            self.retwote_count -= 1     
+   
 
 
     # liked_twotes = relationship('User', secondary=liked, backref=db.backref('user'))
