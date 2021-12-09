@@ -1,3 +1,4 @@
+import re
 from sqlalchemy.engine import url
 from sqlalchemy.orm import session
 from app import app, db
@@ -56,12 +57,24 @@ def new_admin():
 def testing():
 
     foo = Twote.query.first()
+
+    print('TESTING LIKES')
     foo.like(current_user)
     db.session.commit()
     print(foo.is_liked(current_user))
     print(foo.liked_by.first())
-    foo.unlike(current_user)
-    print(foo.is_liked(current_user))
+    
+    print('TESTING RETWOTES')
+    print(foo.is_retwote(current_user))
+    foo.retwote(current_user)
+    print(foo.is_retwote(current_user))
+    db.session.commit()
+    print(foo.retwote_by.first())
+    foo.undo_retwote(current_user)
+    print(foo.is_retwote(current_user))
+
+    # foo.unlike(current_user)
+    # print(foo.is_liked(current_user))
     db.session.commit()
     return '200'
 
@@ -264,6 +277,14 @@ def twote_post():
 #         db.session.add(retweet)
 #         db.session.commit()
 
+@app.route('/like/<twote_id>',methods=['GET'])
+def liked_twote(twote_id):
+    if not current_user.is_authenticated:
+        return redirect(url_for('login_get'))
+    cur_twote = Twote.query.filter_by(id=twote_id).first()
+    return {'liked':cur_twote.is_liked(current_user)}
+
+
 @app.route('/like/<twote_id>',methods=['POST'])
 def like_twote(twote_id):
     if not current_user.is_authenticated:
@@ -289,6 +310,41 @@ def unlike_twote(twote_id):
         return 'tweet unliked'
     else:
         return 'tweet already not liked'   
+
+
+# ######################
+@app.route('/retwote/<twote_id>',methods=['GET'])
+def retwoted_twote(twote_id):
+    if not current_user.is_authenticated:
+        return redirect(url_for('login_get'))
+    cur_twote = Twote.query.filter_by(id=twote_id).first()
+    return {'retwoted':cur_twote.is_retwote(current_user)}
+
+
+@app.route('/retwote/<twote_id>',methods=['POST'])
+def retwote_twote(twote_id):
+    if not current_user.is_authenticated:
+        return redirect(url_for('login_get'))
+    cur_twote = Twote.query.filter_by(id=twote_id).first()
+    if not cur_twote.is_retwote(current_user):
+        cur_twote.retwote(current_user)
+        db.session.commit()
+        return 'tweet retwoted'
+    else:
+        return 'already retwoted'    
+
+@app.route('/unretwote/<twote_id>',methods=['POST'])
+def unretwote_twote(twote_id):
+    if not current_user.is_authenticated:
+        return redirect(url_for('login_get'))
+    cur_twote = Twote.query.filter_by(id=twote_id).first()
+    print(cur_twote)
+    if cur_twote.is_retwote(current_user):
+        cur_twote.undo_retwote(current_user)
+        db.session.commit()
+        return 'tweet unRETWOTES'
+    else:
+        return 'tweet already not retwoted'  
 
 
 class HomeView(AdminIndexView):
