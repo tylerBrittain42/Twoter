@@ -69,10 +69,10 @@
             <div class="row">
                 <!--User info, notifications, etc.-->
                 <div class="col-lg-4 sidebar d-flex flex-column flex-shrink-0 p-3 bg-light sticky" id="sticky-sidebar"style="width:350px;">
-                        <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none" style="padding-left:19%">
+                        <a href="{{ url_for('user', user=c_u.name) }}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none" style="padding-left:19%">
                           <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"/></svg>
                           <span class="fs-4">
-                            <img class="img-thumbnail rounded-circle" height="100" width="100" href="/user/<user>">
+                            <img class="img-thumbnail rounded-circle" height="100" width="100" href="{{ url_for('user', user=c_u.name) }}">
                           </span>
                         </a>
                         <h1 style="padding-left:auto">{{ c_u.name }}</h1>
@@ -149,18 +149,14 @@
                                     <!--Username and option to follow-->
                                     <div class="vstack" style="float:left;">
                                         <img class="img-thumbnail rounded-circle" height="50" width="50">
-                                        <a href="{{ url_for('user', user=twote.user) }}">{{twote.user}}</a>
-                                        
-                                        <!--add Jinja2 if statement-->
-                                        
+                                        <a href="{{ url_for('user', user=twote.user) }}">{{twote.user}}</a>                                        
                                         <button id="follow-button">Follow</button>	
-                                        
                                     </div>
                                     
                                     <div class="posts" style="box-sizing: content-box;">
                                         <p class="posts" id="twotecontent">{{twote.content}}</p>
                                         <br>
-                                        <p style="font-size: 15px; color: gray">{{twote.liked}} likes</p>
+                                        <p id="twotelikes"style="font-size: 15px; color: gray">{{twote.like_count}} likes</p>
                                     </div>
                                     <div style="float:right;">
                                         <div class="hstack">
@@ -196,38 +192,72 @@
                                                 </svg>
                                             </button>
                                             <div class="form-popup" id="myForm">
-                                              <form accept-charset="UTF-8" action="/twote" method="POST" class="form-container">
+                                              <form accept-charset="UTF-8" method="PUT" class="form-container">
                                                 <p>Edit your twote</p>
-                                                <textarea class = "form-control" name = "content" id="content" rows="3" maxlength="145" placeholder="Edit twot"></textarea>
+                                                <textarea class = "form-control" name = "editcontent" id="editcontent" rows="3" maxlength="145" placeholder="Edit twot"></textarea>
                                                 <p name="editResult" style="display: inline-block; position: right;"></p>
-                                                <button type="submit" class="btn" >Submit</button>
+                                                <button type="submit" class="btn" onclick="updateTwote()">Submit</button>
                                                 <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+                                              
+
+                                                <script>
+                                                  //Opens window when 'edit' button is pressed
+                                                  function openForm() {
+                                                    document.getElementById("myForm").style.display = "block";
+                                                  }
+                                                  //Closes window
+                                                  function closeForm() {
+                                                    document.getElementById("myForm").style.display = "none";
+                                                  }
+                                                  //word count
+
+                                                  function updateTwote(){
+                                                    console.log('update called');
+                                                    const ele={name:document.getElementById('editcontent').id}
+                                                    const content = form.elements.action.value;
+                                                    const twote_id = form.elements.action.value;
+                                                    twote_id=this_ele.id
+                                                    fetch(`http://127.0.0.1:5000/twote/`,
+                                                    {
+                                                        method:'PUT',
+                                                        headers:{'Content-Type':'application/json'},
+                                                        body:JSON.stringify(ele)
+                                                    })
+                                                    .then(response => response.json())
+                                                    .then(data =>console.log(data))
+                                                    .then(() => location.reload())
+                                                  }
+
+                                                  
+                                                </script>
                                               </form>
-
-                                              <script>
-                                                //Opens window when 'edit' button is pressed
-                                                function openForm() {
-                                                  document.getElementById("myForm").style.display = "block";
-                                                }
-                                                //Closes window
-                                                function closeForm() {
-                                                  document.getElementById("myForm").style.display = "none";
-                                                }
-                                                //word count
-
-                                                
-                                              </script>
                                             </div>
                                         </div>
                                         <div class="hstack">
                                             <!--add form with put requests-->
                                             <!--Liking a post-->
                                             <form accept-charset="UTF-8" method="POST">
-                                                <button type="button" id="likeBtn" class="btn btn-outline-danger">
+                                                <button type="button" id="{{ twote.id }}" onclick="likeTwote(this)" class="btn btn-outline-danger" href="{{ url_for('like_twote', twote_id=twote.id) }} ">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
                                                         <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
                                                     </svg>
                                                 </button>
+                                                <script>
+                                                  function likeTwote(this_ele){
+                                                      console.log('like clicked')
+                                                      const ele={name:document.getElementById('content').id}
+                                                      twote_id=this_ele.id
+                                                      fetch(`http://127.0.0.1:5000/like/${twote_id}`,
+                                                      {
+                                                          method:'POST',
+                                                          headers:{'Content-Type':'application/json'},
+                                                          body:JSON.stringify(ele)
+                                                      })
+                                                      .then(response => response)
+                                                      .then(data =>console.log(data))
+                                                      .then(() => location.reload())
+                                                  }
+                                              </script>
                                             </form>
                                             <!--Reblogging a post-->
                                             <form accept-charset="UTF-8" method="POST">    
@@ -237,6 +267,7 @@
                                                         <path fill-rule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z"/>
                                                     </svg>
                                                 </button>
+
                                             </form>
                                         </div>
                                     </div>

@@ -241,7 +241,7 @@ def twote_delete():
 def twote_put():
     if not current_user.is_authenticated:
         return redirect(url_for('login_get')) 
-    data = request.form
+    data = request.get_json()
     cur_twote = Twote.query.filter_by(id=data.get('twote_id')).first()
     if current_user.id != cur_twote.u_id:
         return 'error', 500
