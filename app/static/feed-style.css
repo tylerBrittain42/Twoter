@@ -1,0 +1,45 @@
+.sidenav {
+    height: 100%;
+    width: 160px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    padding-top: 20px;
+  }
+
+  .nav:hover {
+    color: royalblue;
+  }
+
+  .posts {
+    font-size: 20px;
+    display: inline-block;
+    font-family: "Hevetica Neue", Roboto, "Segoe UI", Calibri, sans-serif;
+    resize: both;
+  }
+
+  #follow-button {
+    color: #3399ff;
+    font-family: "Helvetica";
+    font-size: 10pt;
+    background-color: #ffffff;
+    border: 1px solid;
+    border-color: #3399ff;
+    border-radius: 3px;
+    width: 85px;
+    height: 30px;
+    cursor: hand;
+  }
+  .form-popup {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    right: 50%;
+    border: 3px solid #f1f1f1;
+    z-index: 15;
+    background-color: white;
+    align-items: center;
+  }
