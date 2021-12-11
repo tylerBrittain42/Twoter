@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <link rel="icon" href="{{ url_for('static', filename='/img/TwoterLogo.png') }}">
         <!-- Required meta tags -->
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -23,7 +24,7 @@
                     <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none" style="padding-left:19%">
                         <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"/></svg>
                         <span class="fs-4">
-                          <img class="img-thumbnail rounded-circle" height="100" width="100" href="/user/<user>">
+                          <img src = "{{ url_for('static', filename='/img/default.jpg') }}" class="img-thumbnail rounded-circle" height="100" width="100" href="/user/<user>">
                         </span>
                       </a>
                     <h1>{{c_u.name}}</h1>
@@ -72,8 +73,8 @@
                                 
                                 <div>
                                     <!--Like, Retwot and option to delete a post-->
-                                    <img class="img-thumbnail rounded-circle" height="50" width="50">
-                                    <p style="display: inline-block; font-family: 'Hevetica Neue', Roboto, 'Segoe UI', Calibri, sans-serif; padding-left: 30px; padding-right: 30px;">{{twote.content}}</p>
+                                    <img src = "{{ url_for('static', filename='/img/default.jpg') }}" class="img-thumbnail rounded-circle" height="100" width="100" href="/user/<user>">
+                                        <p style="display: inline-block; font-family: 'Hevetica Neue', Roboto, 'Segoe UI', Calibri, sans-serif; padding-left: 30px; padding-right: 30px;">{{twote.content}}</p>
                                     <div style="float:right;">
                                         <div class="hstack">
                                             <!--Deleting a post-->
