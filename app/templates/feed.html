@@ -16,60 +16,16 @@
       integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="styles.css" />
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
       crossorigin="anonymous"
     ></script>
 
-    <style>
-      .sidenav {
-        height: 100%;
-        width: 160px;
-        position: fixed;
-        z-index: 1;
-        top: 0;
-        left: 0;
-        background-color: #111;
-        overflow-x: hidden;
-        padding-top: 20px;
-      }
-
-      .nav:hover {
-        color: royalblue;
-      }
-
-      .posts {
-        font-size: 20px;
-        display: inline-block;
-        font-family: "Hevetica Neue", Roboto, "Segoe UI", Calibri, sans-serif;
-        resize: both;
-      }
-
-      #follow-button {
-        color: #3399ff;
-        font-family: "Helvetica";
-        font-size: 10pt;
-        background-color: #ffffff;
-        border: 1px solid;
-        border-color: #3399ff;
-        border-radius: 3px;
-        width: 85px;
-        height: 30px;
-        cursor: hand;
-      }
-      .form-popup {
-        display: none;
-        position: fixed;
-        bottom: 0;
-        right: 50%;
-        border: 3px solid #f1f1f1;
-        z-index: 15;
-        background-color: white;
-        align-items: center;
-      }
-    </style>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='feed-style.css') }}"
+    />
   </head>
 
   <body>
@@ -77,7 +33,7 @@
 
     <div class="container">
       <div class="row">
-        <!--User info, notifications, etc.-->
+        <!-- SIDEBAR START -->
         <div
           class="
             col-lg-4
@@ -185,8 +141,9 @@
           <hr />
           <a href="/logout">logout</a>
         </div>
+        <!-- SIDEBAR END -->
 
-        <!--User Timeline Including twot body and timeline-->
+        <!-- FEED START -->
         <div class="col-lg-8">
           <form accept-charset="UTF-8" action="/twote" method="POST">
             <!--User twot body. Includes char count and post button-->
@@ -201,16 +158,6 @@
               ></textarea>
               <button type="submit">Twot</button>
               <p id="result" style="display: inline-block; position: right"></p>
-              <script>
-                var textCount = document.getElementById("content");
-                var result = document.getElementById("result");
-                var limit = 145;
-                result.textContent = 0 + "/" + limit;
-                textCount.addEventListener("input", function () {
-                  var length = textCount.value.length;
-                  result.textContent = length + "/" + limit;
-                });
-              </script>
             </div>
           </form>
 
@@ -291,26 +238,6 @@
                             />
                           </svg>
                         </button>
-                        <script>
-                          function deleteTwote(this_ele) {
-                            console.log("delete clicked");
-                            const ele = {
-                              name: document.getElementById("twotecontent").id,
-                            };
-                            twote_id = this_ele.id;
-                            fetch(
-                              `http://127.0.0.1:5000/twote?twote_id=${twote_id}`,
-                              {
-                                method: "DELETE",
-                                headers: { "Content-Type": "application/json" },
-                                body: JSON.stringify(ele),
-                              }
-                            )
-                              .then((response) => response.json())
-                              .then((data) => console.log(data))
-                              .then(() => location.reload());
-                          }
-                        </script>
                       </form>
                       <!--Editing a post-->
                       <button
@@ -366,52 +293,6 @@
                           >
                             Close
                           </button>
-
-                          <script>
-                            //Opens window when 'edit' button is pressed
-                            function openForm(this_ele) {
-                              document.getElementById("myForm").style.display =
-                                "block";
-                              const to_remove = document.querySelector(".active")
-                              console.log(to_remove)
-                              if (to_remove != null){
-                                to_remove.classList.remove('active')
-                              }
-                              this_ele.classList.add('active')
-                            }
-                            //Closes window
-                            function closeForm() {
-                              document.getElementById("myForm").style.display =
-                                "none";
-                            }
-                            //word count
-
-                            function updateTwote(this_ele) {
-                              event.preventDefault()
-                              console.log("update called");
-                              const updated_body = document.querySelector("#editcontent").value
-
-                              const ele = {
-                                'editcontent':updated_body,
-                                'twote_id':document.querySelector('.active').id                             
-                              };
-                              //console.log(document.querySelector('.active').id  )
-                              //return
-                              //const content = form.elements.action.value;
-                              //const twote_id = form.elements.action.value;
-                            
-                              fetch(`http://127.0.0.1:5000/twote`, {
-                                method: "PUT",
-                                headers: { "Content-Type": "application/json" },
-                                body: JSON.stringify(ele)
-                              })
-                                .then((res) => (res))
-                                .then((data) => console.log(data))
-                                .then(()=>{window.location.replace("/");})
-                       
-
-                            }
-                          </script>
                         </form>
                       </div>
                     </div>
@@ -439,23 +320,6 @@
                             />
                           </svg>
                         </button>
-                        <script>
-                          function likeTwote(this_ele) {
-                            console.log("like clicked");
-                            const ele = {
-                              name: document.getElementById("content").id,
-                            };
-                            twote_id = this_ele.id;
-                            fetch(`http://127.0.0.1:5000/like/${twote_id}`, {
-                              method: "POST",
-                              headers: { "Content-Type": "application/json" },
-                              body: JSON.stringify(ele),
-                            })
-                              .then((response) => response)
-                              .then((data) => console.log(data))
-                              .then(() => location.reload());
-                          }
-                        </script>
                       </form>
                       <!--Reblogging a post-->
                       <form accept-charset="UTF-8" method="POST">
@@ -492,5 +356,6 @@
         </div>
       </div>
     </div>
+    <script src="{{ url_for('static', filename='feed-script.js') }}"></script>
   </body>
 </html>
