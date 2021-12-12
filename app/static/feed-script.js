@@ -70,7 +70,7 @@ function updateTwote(this_ele) {
     .then((res) => res)
     .then((data) => console.log(data))
     .then(() => {
-      window.location.replace("/");
+      window.location.reload();
     });
 }
 
