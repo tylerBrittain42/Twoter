@@ -26,8 +26,14 @@ function deleteTwote(this_ele) {
     .then(() => location.reload());
 }
 
+function cannotOpen(){
+  alert('ERROR: Cannot Edit')
+  return
+}
+
 //Opens window when 'edit' button is pressed
 function openForm(this_ele) {
+  console.log(this_ele)
   document.getElementById("myForm").style.display = "block";
   const to_remove = document.querySelector(".active");
   console.log(to_remove);
@@ -64,7 +70,7 @@ function updateTwote(this_ele) {
     .then((res) => res)
     .then((data) => console.log(data))
     .then(() => {
-      window.location.replace("/");
+      window.location.reload();
     });
 }
 

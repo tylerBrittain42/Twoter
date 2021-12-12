@@ -248,11 +248,12 @@ def twote_put():
     # return {'status':200}
     cur_twote = Twote.query.filter_by(id=data.get('twote_id')).first()
     if current_user.id != cur_twote.u_id:
-        return {'Does not have access', 500}
+        print('wrong user error')
+        return 500
     cur_twote.content = data.get('editcontent')
-    cur_twote.timestamp = datetime.now()
+    # cur_twote.timestamp = datetime.now()
     db.session.commit()
-    return {'success':200}
+    return {'status':200}
 
 
 

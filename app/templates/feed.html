@@ -240,12 +240,21 @@
                         </button>
                       </form>
                       <!--Editing a post-->
+                      {% if twote.u_id == c_u.id %}
                       <button
                         type="button"
                         id="{{ twote.id }}"
-                        class="btn btn-outline-info"
+                        class="btn btn-outline-info {{ twote.u_id }}"
                         onclick="openForm(this)"
                       >
+                      {% else %}
+                      <button
+                        type="button"
+                        id="{{ twote.id }}"
+                        class="btn btn-outline-info {{ twote.u_id }}"
+                        onclick="cannotOpen()"
+                      >
+                      {% endif %}
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           width="16"
