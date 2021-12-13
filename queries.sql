@@ -15,3 +15,5 @@ WHERE follower_id=2
 
 INSERT INTO user(name,email,password,role, profile_image)
 VALUES('admin','none','pw','admin','none')
+
+DELETE FROM liked
