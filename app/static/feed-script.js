@@ -1,14 +1,18 @@
-console.log("feed-script called");
+tweetLimitCounter();
 
-// Tweet limit counter
-var textCount = document.getElementById("content");
-var result = document.getElementById("result");
-var limit = 145;
-result.textContent = 0 + "/" + limit;
-textCount.addEventListener("input", function () {
-  var length = textCount.value.length;
-  result.textContent = length + "/" + limit;
-});
+
+function tweetLimitCounter(){
+  // Tweet limit counter
+  var textCount = document.getElementById("content");
+  var result = document.getElementById("result");
+  var limit = 145;
+  result.textContent = 0 + "/" + limit;
+  textCount.addEventListener("input", function () {
+    var length = textCount.value.length;
+    result.textContent = length + "/" + limit;
+  });
+}
+
 
 function deleteTwote(this_ele) {
   console.log("delete clicked");
@@ -88,4 +92,28 @@ function likeTwote(this_ele) {
     .then((response) => response)
     .then((data) => console.log(data))
     .then(() => location.reload());
+}
+
+function unlikeTwote(this_ele) {
+  console.log("unlike clicked");
+  const ele = {
+    name: document.getElementById("content").id,
+  };
+  twote_id = this_ele.id;
+  fetch(`http://127.0.0.1:5000/unlike/${twote_id}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(ele),
+  })
+    .then((response) => response)
+    .then((data) => console.log(data))
+    .then(() => location.reload());
+}
+
+
+function likeHandler(ele){
+  if (ele.classList.contains('is-liked'))
+    unlikeTwote(ele)
+  else
+    likeTwote(ele)
 }
