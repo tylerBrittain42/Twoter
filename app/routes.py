@@ -241,14 +241,20 @@ def twote_delete():
 def twote_put():
     if not current_user.is_authenticated:
         return redirect(url_for('login_get')) 
-    data = request.form
+    data = request.get_json()
+    # print('data')
+    # print(data)
+    # print('data')
+    # return {'status':200}
     cur_twote = Twote.query.filter_by(id=data.get('twote_id')).first()
     if current_user.id != cur_twote.u_id:
-        return 'error', 500
+        print('wrong user error')
+        return 500
     cur_twote.content = data.get('editcontent')
-    cur_twote.timestamp = datetime.now()
+    # cur_twote.timestamp = datetime.now()
     db.session.commit()
-    return redirect(url_for('feed'))
+    return {'status':200}
+
 
 
 
