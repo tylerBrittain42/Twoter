@@ -23,8 +23,8 @@ function deleteTwote(this_ele) {
                   "Accept": "application/json"},
       body: JSON.stringify(ele),
     })
-      .then((response) => response.json())
-      .then((data) => console.log(data))
+      //.then((response) => response.json())
+      //.then((data) => console.log(data))
       .then(() =>{window.location.reload()});
   }
 }
