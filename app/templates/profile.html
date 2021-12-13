@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <link rel="icon" href="{{ url_for('static', filename='/img/TwoterLogo.png') }}">
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta
@@ -58,6 +59,7 @@
             </svg>
             <span class="fs-4">
               <img
+              src = "{{ url_for('static', filename='/img/default.jpg') }}"
                 class="img-thumbnail rounded-circle"
                 height="100"
                 width="100"
@@ -130,6 +132,7 @@
                   <!--Username and option to follow-->
                   <div class="vstack" style="float: left">
                     <img
+                    src = "{{ url_for('static', filename='/img/default.jpg') }}"
                       class="img-thumbnail rounded-circle"
                       height="50"
                       width="50"
