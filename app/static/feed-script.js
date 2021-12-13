@@ -19,12 +19,13 @@ function deleteTwote(this_ele) {
     twote_id = this_ele.id;
     fetch(`http://127.0.0.1:5000/twote?twote_id=${twote_id}`, {
       method: "DELETE",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json",
+                  "Accept": "application/json"},
       body: JSON.stringify(ele),
     })
       .then((response) => response.json())
       .then((data) => console.log(data))
-      location.reload();
+      .then(() =>{window.location.reload()});
   }
 }
 
