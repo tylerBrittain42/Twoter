@@ -11,6 +11,7 @@ textCount.addEventListener("input", function () {
 });
 
 function deleteTwote(this_ele) {
+  if(confirm("Are you sure you want to delete this twowte?")){
   console.log("delete clicked");
   const ele = {
     name: document.getElementById("twotecontent").id,
@@ -24,6 +25,7 @@ function deleteTwote(this_ele) {
     .then((response) => response.json())
     .then((data) => console.log(data))
     .then(() => location.reload());
+}
 }
 
 function cannotOpen(){
