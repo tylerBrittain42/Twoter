@@ -31,11 +31,6 @@ function cannotOpen(){
   return
 }
 
-function cannotDelete(){
-  alert('ERROR: Cannot Delete')
-  return
-}
-
 //Opens window when 'edit' button is pressed
 function openForm(this_ele) {
   console.log(this_ele)
