@@ -100,7 +100,7 @@ function likeTwote(this_ele) {
   })
     .then((response) => response)
     .then((data) => console.log(data))
-    .then(() => location.reload());
+    .then(() => window.location.reload());
 }
 
 function unlikeTwote(this_ele) {
@@ -116,7 +116,7 @@ function unlikeTwote(this_ele) {
   })
     .then((response) => response)
     .then((data) => console.log(data))
-    .then(() => location.reload());
+    .then(() => window.location.reload());
 }
 
 
@@ -125,4 +125,33 @@ function likeHandler(ele){
     unlikeTwote(ele)
   else
     likeTwote(ele)
+}
+
+function retwoteHandler(ele){
+  if (ele.classList.contains('is-retwot'))
+    unreTwote(ele.id)
+  else
+    reTwote(ele.id)
+}
+
+function reTwote(twote_id){
+
+  fetch(`http://127.0.0.1:5000/retwote/${twote_id}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" }
+    // body: JSON.stringify(ele),
+  })
+    .then(() => window.location.reload());
+
+}
+
+function unreTwote(twote_id){
+  console.log('unretwote clicked')
+  fetch(`http://127.0.0.1:5000/unretwote/${twote_id}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" }
+    // body: JSON.stringify(ele),
+  })
+    .then(() => window.location.reload());
+
 }

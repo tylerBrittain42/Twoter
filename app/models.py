@@ -121,10 +121,10 @@ class Twote(db.Model):
             self.retwote_count += 1
 
     def undo_retwote(self, user):
-        if self.is_liked(user):
+        if self.is_retwote(user):
             self.retwote_by.remove(user)
-            self.retwote_count -= 1     
-   
+            self.retwote_count -= 1   
+
 
 
     # liked_twotes = relationship('User', secondary=liked, backref=db.backref('user'))
