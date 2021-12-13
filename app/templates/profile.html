@@ -137,7 +137,19 @@
                     <a href="{{ url_for('user', user=twote.user.name) }}"
                       >{{twote.user}}</a
                     >
-                    <button id="follow-button">Follow</button>
+                    {% if c_u == twote.user %}
+                    <form onclick="noFollow()">
+                      <button type="submit" class="btn btn-info full-width" >Self     </button>
+                  </form>
+                    {% elif not c_u.is_following(twote.user) %}
+                    <form action="/follow/{{ twote.user.name }}">
+                      <button type="submit" class="btn btn-primary full-width" >Follow   </button>
+                  </form>
+                  {% else %}
+                  <form action="/unfollow/{{ twote.user.name }}">
+                    <button type="submit" class="btn btn-danger full-width" >Unfollow </button>
+                </form>
+                {% endif %}
                   </div>
 
                   <div class="posts" style="box-sizing: content-box">

@@ -158,3 +158,7 @@ function unreTwote(twote_id){
     .then(() => window.location.reload());
 
 }
+
+function noFollow(){
+  alert('Cannot follow self')
+}

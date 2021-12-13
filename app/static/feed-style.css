@@ -43,3 +43,9 @@
     background-color: white;
     align-items: center;
   }
+
+  .full-width{
+    display:block;
+    width: 100%;
+
+}
