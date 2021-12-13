@@ -38,6 +38,8 @@ function cannotOpen(){
   return
 }
 
+
+
 //Opens window when 'edit' button is pressed
 function openForm(this_ele) {
   console.log(this_ele)
@@ -53,7 +55,11 @@ function openForm(this_ele) {
 function closeForm() {
   document.getElementById("myForm").style.display = "none";
 }
-//word count
+
+function cannotDelete(){
+  alert('ERROR: Cannot Delete')
+  return
+}
 
 function updateTwote(this_ele) {
   event.preventDefault();
