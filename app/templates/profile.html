@@ -290,11 +290,22 @@
                       </form>
                       <!--Reblogging a post-->
                       <form accept-charset="UTF-8" method="POST">
-                        <button
-                          type="button"
-                          id="retwotBtn"
-                          class="btn btn-outline-success"
-                        >
+                        <form accept-charset="UTF-8" method="POST">
+                          {% if twote.is_retwote(c_u) %}
+                          <button
+                            type="button"
+                            id="{{ twote.id }}"
+                            class="is-retwot active btn btn-outline-success"
+                            onclick="retwoteHandler(this)"
+                          >
+                          {% else %}
+                          <button
+                            type="button"
+                            id="{{ twote.id }}"
+                            class="not-retwot btn btn-outline-success"
+                            onclick="retwoteHandler(this)"
+                          >
+                          {% endif %}
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="16"
