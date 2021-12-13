@@ -215,12 +215,21 @@
                     <div class="hstack">
                       <!--Deleting a post-->
                       <form accept-charset="UTF-8" method="DELETE">
+                        {% if twote.u_id == c_u.id %}
                         <button
                           type="button"
                           onclick="deleteTwote(this)"
                           id="{{ twote.id }}"
                           class="btn btn-outline-warning"
                         >
+                        {% else %}
+                        <button
+                        type="button"
+                        onclick="cannotDelete(this)"
+                        id="{{ twote.id }}"
+                        class="btn btn-outline-warning"
+                      >
+                      {% endif %}
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="16"
