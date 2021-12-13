@@ -156,7 +156,7 @@ def user(user):
     
     return render_template('profile.html',twotes=content, c_u=current_user, p_u=p_user)
 
-@app.route('/follow/<user>', methods=['POST'])
+@app.route('/follow/<user>', methods=['GET'])
 def follow(user):
     if not current_user.is_authenticated:
         return redirect(url_for('login_get'))
@@ -168,9 +168,10 @@ def follow(user):
     else: 
         current_user.follow(user_to_follow)
         db.session.commit()
-        return 'follow post recieved'
+        print(f'followed {user}')
+        return redirect(request.referrer)
     
-@app.route('/unfollow/<user>', methods=['POST'])
+@app.route('/unfollow/<user>', methods=['GET'])
 def unfollow(user):
     if not current_user.is_authenticated:
         return redirect(url_for('login_get'))
@@ -182,7 +183,7 @@ def unfollow(user):
     else: 
         current_user.unfollow(user_to_unfollow)
         db.session.commit()
-        return 'unfollow post recieved'
+        return redirect(request.referrer)
 
 
 '''IMPORTANT'''
