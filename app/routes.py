@@ -145,14 +145,16 @@ def user(user):
     if not current_user.is_authenticated:
         return redirect(url_for('login_get'))    
     
-    if User.query.filter_by(name=user).first() is None:
+    p_user=User.query.filter_by(name=user).first()
+
+    if p_user is None:
         flash('USER DOES NOT EXIST')
         return redirect(url_for('feed'))
 
     # content = Twote.query.filter(Twote.user.has(name=user)).order_by(desc(Twote.timestamp)).all()
-    content = current_user.retwoted()
+    content = p_user.retwoted()
     
-    return render_template('profile.html',twotes=content, c_u=current_user)
+    return render_template('profile.html',twotes=content, c_u=current_user, p_u=p_user)
 
 @app.route('/follow/<user>', methods=['POST'])
 def follow(user):
