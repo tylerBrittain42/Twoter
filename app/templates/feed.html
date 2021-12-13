@@ -29,8 +29,8 @@
   </head>
 
   <body>
-    <a href="/feed">
-     <img class="mb-4" src="{{ url_for('static', filename='/img/TwoterLogo.png') }}" alt="" width="80" height="80" style="align-items: center;">
+    <a href="/feed/all">
+     <img class="center" src="{{ url_for('static', filename='/img/TwoterLogo.png') }}" alt="" width="80" height="80" style="align-items: center;">
     </a>
     <div class="container">
       <div class="row">
@@ -72,7 +72,7 @@
               />
             </span>
           </a>
-          <h1 style="padding-left: auto">{{ c_u.name }}</h1>
+          <h1 class="center">{{ c_u.name }}</h1>
           <hr />
           <ul class="nav nav-pills flex-column mb-auto">
             <li class="nav-item">
