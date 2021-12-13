@@ -44,12 +44,15 @@ function cannotOpen(){
 function openForm(this_ele) {
   console.log(this_ele)
   document.getElementById("myForm").style.display = "block";
-  const to_remove = document.querySelector(".active");
+  // const to_remove = document.querySelector(".active");
+  const to_remove = document.querySelector('.active-edit')
   console.log(to_remove);
   if (to_remove != null) {
     to_remove.classList.remove("active");
+    to_remove.classList.remove("active-edit")
   }
   this_ele.classList.add("active");
+  this_ele.classList.add('active-edit');
 }
 //Closes window
 function closeForm() {
@@ -68,7 +71,7 @@ function updateTwote(this_ele) {
 
   const ele = {
     editcontent: updated_body,
-    twote_id: document.querySelector(".active").id,
+    twote_id: document.querySelector(".active-edit").id,
   };
   //console.log(document.querySelector('.active').id  )
   //return
