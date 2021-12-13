@@ -276,7 +276,7 @@ def twote_post():
     db.session.add(new_twote)
     db.session.commit()
 
-    return redirect(url_for('feed'))
+    return redirect(request.referrer)
 
 
 # @app.route('/retwote/<twotes_id>',methods=['GET','POST'])
