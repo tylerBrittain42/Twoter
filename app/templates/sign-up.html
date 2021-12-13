@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <link rel="icon" href="{{ url_for('static', filename='/img/TwoterLogo.png') }}">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
@@ -34,13 +35,12 @@
 
     
     <!-- Custom styles for this template -->
-    <link href="/Users/rafaeleduardolintao/Desktop/Twoter/bootstrap:css/examples/sign-in/signin.css" rel="stylesheet">
   </head>
 
   
   <body class="text-center form-signin">
-      <img class="mb-4" src="TwoterLogo.png" alt="" width="200" height="200">
-      <h1 class="h3 mb-3 fw-normal">Sign Up for Twoter</h1>
+    <img class="mb-4" src="{{ url_for('static', filename='/img/TwoterLogo.png') }}" alt="" width="200" height="200">
+    <h1 class="h3 mb-3 fw-normal">Sign Up for Twoter</h1>
       <p>Create your own flock</p>
 
       {% with messages = get_flashed_messages() %}
@@ -50,6 +50,8 @@
       {% endfor %}
       {% endif %}
       {% endwith %}
+
+      <div class = "login" style="width:45%; margin:0 auto">
       <form action="/sign-up" method="post" class="center-form">
         <!--Username sign-up-->
         <label for="username"></label>
@@ -61,6 +63,7 @@
         
         <button class="w-100 btn btn-lg btn-primary" type="submit">Find Your Flock</button>
       </form>  
+    </div>
 
       <div>
         <p>Already have an account? <a href='/login'>login</a></p> 
