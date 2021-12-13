@@ -208,28 +208,22 @@
                     <p class="posts" id="twotecontent">{{twote.content}}</p>
                     <br />
                     <p id="twotelikes" style="font-size: 15px; color: gray">
-                      {{twote.like_count}} likes
+                      {{ twote.like_count }} likes
                     </p>
                   </div>
                   <div style="float: right">
                     <div class="hstack">
                       <!--Deleting a post-->
+
                       <form accept-charset="UTF-8">
                         {% if twote.u_id == c_u.id %}
+
                         <button
                           type="button"
                           onclick="deleteTwote(this)"
                           id="{{ twote.id }}"
                           class="btn btn-outline-warning"
                         >
-                        {% else %}
-                        <button
-                        type="button"
-                        onclick="cannotDelete(this)"
-                        id="{{ twote.id }}"
-                        class="btn btn-outline-warning"
-                      >
-                      {% endif %}
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="16"
@@ -318,13 +312,24 @@
                       <!--add form with put requests-->
                       <!--Liking a post-->
                       <form accept-charset="UTF-8" method="POST">
+                        {% if twote.is_liked(c_u) %}
                         <button
                           type="button"
                           id="{{ twote.id }}"
-                          onclick="likeTwote(this)"
-                          class="btn btn-outline-danger"
+                          onclick="likeHandler(this)"
+                          class="active is-liked like-button btn btn-outline-danger"
                           href="{{ url_for('like_twote', twote_id=twote.id) }} "
                         >
+                        {% else %}
+                        <button
+                          type="button"
+                          id="{{ twote.id }}"
+                          onclick="likeHandler(this)"
+                          class="not-liked like-button btn btn-outline-danger"
+                          href="{{ url_for('like_twote', twote_id=twote.id) }} "
+                        >
+                        {% endif %}
+                        
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="16"
@@ -338,6 +343,7 @@
                             />
                           </svg>
                         </button>
+                        
                       </form>
                       <!--Reblogging a post-->
                       <form accept-charset="UTF-8" method="POST">
