@@ -214,7 +214,10 @@
                   <div style="float: right">
                     <div class="hstack">
                       <!--Deleting a post-->
-                      <form accept-charset="UTF-8" method="DELETE">
+
+                      <form accept-charset="UTF-8">
+                        {% if twote.u_id == c_u.id %}
+
                         <button
                           type="button"
                           onclick="deleteTwote(this)"
