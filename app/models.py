@@ -78,7 +78,7 @@ class User(UserMixin, db.Model):
     def retwoted(self):
         retwoted = Twote.query.join(
             retwot, (retwot.c.twotes_id== Twote.id)
-        )
+        ).filter_by(user_id=self.id)
         own = Twote.query.filter_by(u_id=self.id)
         return retwoted.union(own).order_by(Twote.timestamp.desc()).all()
 
