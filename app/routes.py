@@ -17,9 +17,9 @@ from flask_admin.contrib.sqla import ModelView
 def new_admin():
 
 
-    db.session.query(User).delete()
-    db.session.query(Twote).delete()
-    db.session.commit()
+    # db.session.query(User).delete()
+    # db.session.query(Twote).delete()
+    # db.session.commit()
     
     new_user = User(name='admin', password='pw', role='admin')
     new_user.set_password('pw')
@@ -291,6 +291,7 @@ def twote_post():
 def liked_twote(twote_id):
     if not current_user.is_authenticated:
         return redirect(url_for('login_get'))
+    print('like cliced')
     cur_twote = Twote.query.filter_by(id=twote_id).first()
     return {'liked':cur_twote.is_liked(current_user)}
 

@@ -17,4 +17,7 @@ INSERT INTO user(name,email,password,role, profile_image)
 VALUES('admin','none','pw','admin','none')
 
 DELETE FROM retwote;
-DELETE FROM liked
+DELETE FROM liked;
+DELETE FROM followers;
+DELETE FROM twote;
+DELETE FROM user
