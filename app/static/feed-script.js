@@ -21,7 +21,7 @@ function deleteTwote(this_ele) {
       name: document.getElementById("twotecontent").id,
     };
     twote_id = this_ele.id;
-    fetch(`http://127.0.0.1:5000/twote?twote_id=${twote_id}`, {
+    fetch(`https://twoter-106.herokuapp.com/twote?twote_id=${twote_id}`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json",
                   "Accept": "application/json"},
@@ -78,7 +78,7 @@ function updateTwote(this_ele) {
   //const content = form.elements.action.value;
   //const twote_id = form.elements.action.value;
 
-  fetch(`http://127.0.0.1:5000/twote`, {
+  fetch(`https://twoter-106.herokuapp.com/twote`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(ele),
@@ -96,7 +96,7 @@ function likeTwote(this_ele) {
     name: document.getElementById("content").id,
   };
   twote_id = this_ele.id;
-  fetch(`http://127.0.0.1:5000/like/${twote_id}`, {
+  fetch(`https://twoter-106.herokuapp.com/like/${twote_id}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(ele),
@@ -112,7 +112,7 @@ function unlikeTwote(this_ele) {
     name: document.getElementById("content").id,
   };
   twote_id = this_ele.id;
-  fetch(`http://127.0.0.1:5000/unlike/${twote_id}`, {
+  fetch(`https://twoter-106.herokuapp.com/unlike/${twote_id}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(ele),
@@ -139,7 +139,7 @@ function retwoteHandler(ele){
 
 function reTwote(twote_id){
 
-  fetch(`http://127.0.0.1:5000/retwote/${twote_id}`, {
+  fetch(`https://twoter-106.herokuapp.com/retwote/${twote_id}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" }
     // body: JSON.stringify(ele),
@@ -150,7 +150,7 @@ function reTwote(twote_id){
 
 function unreTwote(twote_id){
   console.log('unretwote clicked')
-  fetch(`http://127.0.0.1:5000/unretwote/${twote_id}`, {
+  fetch(`https://twoter-106.herokuapp.com/unretwote/${twote_id}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" }
     // body: JSON.stringify(ele),

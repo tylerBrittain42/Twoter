@@ -21,7 +21,7 @@ class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), index=True, unique=True)
     email = db.Column(db.String(120), index=True, default='None')
-    password = db.Column(db.String(100))
+    password = db.Column(db.String(200))
     profile_image = db.Column(db.String(200), nullable=False, default='default.jpg')
     authenticated = db.Column(db.Boolean, default=False)
 
